@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموسوعة الشاملة: الدوال الأصلية والتكامل | منصة نوفل</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true },
+            chtml: { scale: 1.15 } 
+        };
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #1e1b4b; /* كحلي داكن */
+            --secondary-color: #3b82f6; /* أزرق فاتح */
+            --accent-color: #f59e0b; /* ذهبي */
+            --success-color: #10b981; /* أخضر */
+            --danger-color: #ef4444; /* أحمر */
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.8; padding-bottom: 50px; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 20px; }
+
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-bottom: 40px;
+            position: relative;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        .badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        header h1 { font-size: 34px; margin-bottom: 10px; font-weight: 800; }
+        header h2 { font-size: 18px; font-weight: 500; color: #e2e8f0; }
+
+        /* أزرار التبويبات */
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 35px; flex-wrap: wrap; }
+        .tab-btn {
+            background-color: var(--card-bg); color: var(--primary-color); border: 2px solid #cbd5e1;
+            padding: 12px 20px; font-size: 17px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .tab-btn:hover { background-color: #eff6ff; border-color: var(--secondary-color); }
+        .tab-btn.active { background-color: var(--secondary-color); color: #fff; border-color: var(--secondary-color); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4); }
+
+        /* الأقسام */
+        .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* البطاقات والجداول */
+        .card { background-color: var(--card-bg); border-radius: 12px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-right: 6px solid var(--secondary-color); }
+        .card-title { font-size: 22px; font-weight: 800; color: var(--primary-color); margin-bottom: 20px; border-bottom: 2px dashed #cbd5e1; padding-bottom: 10px; }
+        
+        .math-box { direction: ltr; text-align: left; background-color: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #94a3b8; margin: 15px 0; overflow-x: auto; font-size: 18px; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 18px; direction: rtl; }
+        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; }
+        th { background-color: #e2e8f0; font-weight: bold; color: var(--primary-color); }
+        tr:nth-child(even) { background-color: #f8fafc; }
+
+        /* قسم الأسئلة المتكررة */
+        .q-card { border-right-color: var(--success-color); }
+        .q-title { color: var(--success-color); font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+        .q-text { font-size: 19px; font-weight: 600; margin-bottom: 20px; color: #334155; }
+        
+        .reveal-btn { background: #f1f5f9; color: var(--success-color); border: 2px dashed var(--success-color); padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s; width: 100%; }
+        .reveal-btn:hover { background: var(--success-color); color: white; border-style: solid; }
+        
+        .answer-box { display: none; margin-top: 20px; padding: 20px; background-color: #f0fdf4; border-radius: 8px; border: 1px solid #86efac; font-size: 18px; color: #166534; line-height: 1.9; }
+        .answer-box.show { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .note { background-color: #fffbeb; border-right: 4px solid #f59e0b; padding: 15px; border-radius: 5px; margin: 15px 0; font-weight: bold; color: #92400e; }
+        .important { color: #b91c1c; font-weight: bold; }
+
+        footer { text-align: center; margin-top: 40px; color: #64748b; font-weight: bold; padding-top: 20px; border-top: 2px dashed #cbd5e1; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="badge">بكالوريا - جميع الشعب العلمية</div>
+            <h1>الموسوعة الشاملة: الدوال الأصلية والتكامل</h1>
+            <h2>درس مفصل + تكامل بالتجزئة + مساحات + منهجية حل أسئلة البكالوريا</h2>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('basics', this)">1. القواعد الأساسية 📚</button>
+            <button class="tab-btn" onclick="switchTab('parts', this)">2. التكامل بالتجزئة ✂️</button>
+            <button class="tab-btn" onclick="switchTab('areas', this)">3. حساب المساحات 📐</button>
+            <button class="tab-btn" onclick="switchTab('questions', this)">4. بنك أسئلة البكالوريا 🎯</button>
+            <button class="tab-btn" onclick="window.print()" style="background-color: #475569; color: white; border-color: #475569;">طباعة الدرس 🖨️</button>
+        </div>
+
+        <div id="basics" class="content-section active">
+            <div class="card">
+                <div class="card-title">1. تعريف الدالة الأصلية</div>
+                <p>نقول عن دالة \( F \) إنها دالة أصلية للدالة \( f \) على مجال \( I \)، إذا تحقق الشرطان:</p>
+                <ol style="margin-right: 25px; margin-top: 10px;">
+                    <li>الدالة \( F \) قابلة للاشتقاق على المجال \( I \).</li>
+                    <li>من أجل كل \( x \) من المجال \( I \)، لدينا: <strong>\( F'(x) = f(x) \)</strong>.</li>
+                </ol>
+                <div class="note">
+                    مبرهنة: كل دالة مستمرة على مجال \( I \) تقبل دوال أصلية على هذا المجال.<br>
+                    إذا كانت \( F(x) \) دالة أصلية لـ \( f(x) \)، فإن جميع الدوال الأصلية لـ \( f \) تُكتب من الشكل: 
+                    <div class="math-box" style="text-align: center;">\[ G(x) = F(x) + C \]</div>
+                    حيث \( C \) عدد حقيقي ثابت.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">2. جدول الدوال الأصلية للدوال المألوفة (الأساسية)</div>
+                <table>
+                    <tr><th>الدالة \( f(x) \)</th><th>الدوال الأصلية \( F(x) \)</th></tr>
+                    <tr><td dir="ltr">\( a \) (عدد ثابت)</td><td dir="ltr">\( ax + C \)</td></tr>
+                    <tr><td dir="ltr">\( x^n \)</td><td dir="ltr">\( \frac{x^{n+1}}{n+1} + C \)</td></tr>
+                    <tr><td dir="ltr">\( \frac{1}{x^2} \)</td><td dir="ltr">\( -\frac{1}{x} + C \)</td></tr>
+                    <tr><td dir="ltr">\( \frac{1}{\sqrt{x}} \)</td><td dir="ltr">\( 2\sqrt{x} + C \)</td></tr>
+                    <tr><td dir="ltr">\( e^x \)</td><td dir="ltr">\( e^x + C \)</td></tr>
+                    <tr><td dir="ltr">\( e^{ax+b} \)</td><td dir="ltr">\( \frac{1}{a}e^{ax+b} + C \)</td></tr>
+                    <tr><td dir="ltr">\( \frac{1}{x} \)</td><td dir="ltr">\( \ln|x| + C \)</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-title">3. العمليات على الدوال الأصلية (استعمال دالة مركبة \( u \))</div>
+                <p>القواعد الذهبية للبحث عن دالة أصلية بملاحظة مشتقة ما بداخلها \( u'(x) \):</p>
+                <table>
+                    <tr><th>شكل الدالة \( f(x) \)</th><th>الدوال الأصلية \( F(x) \)</th></tr>
+                    <tr><td dir="ltr">\( u'(x) \cdot [u(x)]^n \)</td><td dir="ltr">\( \frac{[u(x)]^{n+1}}{n+1} + C \)</td></tr>
+                    <tr><td dir="ltr">\( \frac{u'(x)}{[u(x)]^2} \)</td><td dir="ltr">\( -\frac{1}{u(x)} + C \)</td></tr>
+                    <tr><td dir="ltr">\( \frac{u'(x)}{\sqrt{u(x)}} \)</td><td dir="ltr">\( 2\sqrt{u(x)} + C \)</td></tr>
+                    <tr><td dir="ltr">\( u'(x) \cdot e^{u(x)} \)</td><td dir="ltr">\( e^{u(x)} + C \)</td></tr>
+                    <tr><td dir="ltr">\( \frac{u'(x)}{u(x)} \)</td><td dir="ltr">\( \ln|u(x)| + C \)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="parts" class="content-section">
+            <div class="card">
+                <div class="card-title">✂️ التكامل بالتجزئة (Intégration par parties)</div>
+                <p>نستخدم هذه الطريقة عندما تكون الدالة عبارة عن <strong>جداء دالتين لا تربطهما علاقة اشتقاق</strong> (أي لا يمكن تطبيق قواعد الجدول السابقة عليها مباشرة).</p>
+                
+                <div class="note">
+                    <strong>القاعدة القانونية:</strong>
+                    <div class="math-box" style="text-align: center; border:none; background:transparent;">
+                        \[ \int_a^b u(x)v'(x) \, dx = \left[ u(x)v(x) \right]_a^b - \int_a^b u'(x)v(x) \, dx \]
+                    </div>
+                </div>
+
+                <h3 style="margin-top:20px; color:var(--secondary-color)">⭐ كيف أختار \( u(x) \) و \( v'(x) \)؟ (السر الذهبي: تقنية ALPES)</h3>
+                <p>للتفريق واختيار الدالة التي نضعها \( u(x) \) لنقوم باشتقاقها، نتبع ترتيب كلمة <strong>ALPES</strong> (الأولوية للحرف الذي يظهر أولاً):</p>
+                <ul style="margin-right:30px; margin-top:10px; line-height: 2;">
+                    <li><strong>A / L:</strong> الدوال اللوغاريتمية (\( \ln \)) - (لها أعلى أولوية لتكون \( u \)).</li>
+                    <li><strong>P:</strong> كثيرات الحدود (\( x, x^2, \dots \)).</li>
+                    <li><strong>E:</strong> الدوال الأسية (\( e^x \)).</li>
+                    <li><strong>S:</strong> الدوال المثلثية (\( \sin, \cos \)).</li>
+                </ul>
+                <div class="math-box">
+                    <strong>مثال توضيحي:</strong> في التكامل \( \int x e^x dx \)، لدينا كثير حدود \( x \) (وهو P) وأسية \( e^x \) (وهي E). حسب كلمة ALPES، الحرف P يسبق E، إذن نضع \( u(x)=x \) ونضع \( v'(x)=e^x \).
+                </div>
+            </div>
+        </div>
+
+        <div id="areas" class="content-section">
+            <div class="card" style="border-right-color: var(--accent-color);">
+                <div class="card-title">📐 حساب المساحات (Calcul d'aires)</div>
+                <p>مساحة الحيز المحصور بين منحنى \( (C_f) \) ومحور الفواصل والمستقيمين ذوي المعادلتين \( x=a \) و \( x=b \) تُعطى بالعلاقة:</p>
+                <div class="math-box" style="text-align: center;">\[ \mathcal{A} = \int_a^b |f(x)| \, dx \times \text{u.a} \]</div>
+                
+                <h3 style="color:var(--accent-color); margin:20px 0 10px 0;">الحالات الثلاث الشائعة:</h3>
+                <ol style="margin-right:25px; line-height: 2;">
+                    <li><strong>المنحنى يقع فوق محور الفواصل:</strong> المساحة هي \( \int_a^b f(x) dx \).</li>
+                    <li><strong>المنحنى يقع تحت محور الفواصل:</strong> المساحة هي \( \int_a^b -f(x) dx \).</li>
+                    <li><strong>المساحة بين منحنيين \( f \) و \( g \):</strong> المساحة هي \( \int_a^b (f(x) - g(x)) dx \) (بشرط أن يكون المنحنى \( f \) يقع فوق المنحنى \( g \) في المجال \( [a,b] \)).</li>
+                </ol>
+                <div class="note">
+                    <span class="important">تنبيه هام جداً (وحدة المساحة u.a):</span> لا تنسَ وحدة المساحة في النهاية. <br>
+                    \( \text{u.a} = \| \vec{i} \| \times \| \vec{j} \| \).<br>
+                    مثلاً، إذا كان السلم في المعلم هو \( 2\text{cm} \) لكل وحدة، فإن وحدة المساحة هي: \( 2\text{cm} \times 2\text{cm} = 4\text{cm}^2 \).
+                </div>
+            </div>
+        </div>
+
+        <div id="questions" class="content-section">
+            
+            <div class="card q-card">
+                <div class="q-title">النوع 1: سؤال الإثبات المباشر (الأكثر شيوعاً)</div>
+                <div class="q-text">
+                    <strong>السؤال:</strong> بيّن أن الدالة \( F \) هي دالة أصلية للدالة \( f \) على المجال \( I \).
+                </div>
+                <button class="reveal-btn" onclick="toggleAnswer(this)">عرض طريقة الحل المنهجية 💡</button>
+                <div class="answer-box">
+                    <strong>المنهجية (الاشتقاق العكسي):</strong><br>
+                    <strong>إياك</strong> أن تحاول إيجاد الدالة الأصلية لـ \( f \) انطلاقاً من القواعد. الطريقة الصحيحة والأسهل هي:<br>
+                    1- اكتب: "الدالة \( F \) قابلة للاشتقاق على المجال \( I \) ودالتها المشتقة هي:"<br>
+                    2- قم <strong>باشتقاق</strong> الدالة الكبيرة \( F(x) \).<br>
+                    3- بسّط العبارة الناتجة حتى تصل بالضبط إلى عبارة \( f(x) \).<br>
+                    4- اختم بقولك: "بما أن \( F'(x) = f(x) \)، فإن \( F \) هي دالة أصلية لـ \( f \)".
+                </div>
+            </div>
+
+            <div class="card q-card">
+                <div class="q-title">النوع 2: إيجاد الدالة الأصلية التي تحقق شرطاً (تعيين الثابت C)</div>
+                <div class="q-text">
+                    <strong>السؤال:</strong> عيّن الدالة الأصلية \( G \) للدالة \( f \) والتي تنعدم من أجل \( x = 1 \) (أي \( G(1) = 0 \)).
+                </div>
+                <button class="reveal-btn" onclick="toggleAnswer(this)">عرض طريقة الحل المنهجية 💡</button>
+                <div class="answer-box">
+                    <strong>المنهجية:</strong><br>
+                    1- أوجد العبارة العامة للدوال الأصلية: \( G(x) = F(x) + C \).<br>
+                    2- استخدم الشرط: \( G(1) = 0 \).<br>
+                    3- حل المعادلة: <span dir="ltr">\( F(1) + C = 0 \implies C = -F(1) \)</span>.<br>
+                    4- أعد كتابة الدالة الأصلية \( G(x) \) بعد تعويض قيمة \( C \) التي وجدتها.
+                </div>
+            </div>
+
+            <div class="card q-card">
+                <div class="q-title">النوع 3: التفكيك (أو المطابقة) لاستنتاج الدالة الأصلية</div>
+                <div class="q-text">
+                    <strong>السؤال:</strong> <br>
+                    أ) أوجد الأعداد \( a, b, c \) بحيث: \( f(x) = ax + b + \frac{c}{x-1} \).<br>
+                    ب) استنتج دالة أصلية للدالة \( f \).
+                </div>
+                <button class="reveal-btn" onclick="toggleAnswer(this)">عرض طريقة الحل المنهجية 💡</button>
+                <div class="answer-box">
+                    <strong>المنهجية:</strong><br>
+                    أ) وحد مقامات العبارة \( ax + b + \frac{c}{x-1} \)، انشر وبسّط، ثم طابق مع بسط الدالة \( f(x) \) الأصلية لإيجاد \( a, b, c \).<br>
+                    ب) لا تستخدم عبارة \( f(x) \) الأولى المعقدة! بل استخدم العبارة المفككة لإيجاد الدالة الأصلية بالاعتماد على قواعد الجدول البسيطة.<br>
+                    - أصلية \( ax \) هي \( a \frac{x^2}{2} \).<br>
+                    - أصلية \( \frac{c}{x-1} \) هي \( c \ln|x-1| \).
+                </div>
+            </div>
+
+            <div class="card q-card">
+                <div class="q-title">النوع 4: الاستنتاج من مشتقة دالة مساعدة</div>
+                <div class="q-text">
+                    <strong>السؤال:</strong> <br>
+                    أ) احسب مشتقة الدالة \( h(x) = x \ln(x) - x \).<br>
+                    ب) استنتج دالة أصلية للدالة \( g(x) = \ln(x) \).
+                </div>
+                <button class="reveal-btn" onclick="toggleAnswer(this)">عرض طريقة الحل المنهجية 💡</button>
+                <div class="answer-box">
+                    <strong>المنهجية:</strong><br>
+                    أ) <strong>حساب المشتقة:</strong> (مشتق جداء) <span dir="ltr">\( h'(x) = (1)\ln(x) + x(\frac{1}{x}) - 1 = \ln(x) \)</span>.<br>
+                    ب) <strong>الاستنتاج:</strong> بما أن \( h'(x) = g(x) \)، فهذا يعني حسب التعريف أن الدالة \( h(x) \) المعطاة هي الدالة الأصلية المطلوبة مباشرة!
+                </div>
+            </div>
+
+            <div class="card q-card">
+                <div class="q-title">النوع 5: متى أستخدم التجزئة ومتى أستخدم قواعد الجدول؟</div>
+                <div class="q-text">
+                    <strong>تساؤل شائع:</strong> يواجه الطالب تكاملاً ولا يعرف هل يستخدم الجدول أم تقنية التكامل بالتجزئة.
+                </div>
+                <button class="reveal-btn" onclick="toggleAnswer(this)">عرض الفكرة المنهجية 💡</button>
+                <div class="answer-box">
+                    <strong>الجواب:</strong> انظر إلى الجداء المعطى:<br>
+                    - إذا كان أحد الطرفين هو "مشتقة" لما بداخل الطرف الآخر (مثال: \( \int 2x e^{x^2} dx \) لأن \( 2x \) هي مشتقة \( x^2 \))، هنا تستخدم <strong>قواعد الجدول المباشرة</strong>.<br>
+                    - إذا كان الدالتان لا علاقة اشتقاق بينهما إطلاقاً (مثال: \( \int x \ln x \, dx \) أو \( \int (x+1)e^x \, dx \))، هنا تستخدم <strong>التكامل بالتجزئة</strong> فوراً.
+                </div>
+            </div>
+
+            <div class="card q-card">
+                <div class="q-title">النوع 6: تطبيق عملي على التكامل بالتجزئة (بكالوريا)</div>
+                <div class="q-text">
+                    <strong>السؤال:</strong> احسب التكامل التالي باستعمال المكاملة بالتجزئة: \( I = \int_1^e x \ln(x) dx \).
+                </div>
+                <button class="reveal-btn" onclick="toggleAnswer(this)">عرض الحل النموذجي بالخطوات 💡</button>
+                <div class="answer-box">
+                    <strong>الحل:</strong><br>
+                    نطبق تقنية <strong>ALPES</strong>. لدينا \( \ln \) وكثير حدود \( x \). اللوغاريتمية تسبق، إذن:<br>
+                    <div class="math-box" style="background:transparent; border:none; margin:0;">
+                        \( u(x) = \ln(x) \implies u'(x) = \frac{1}{x} \)<br>
+                        \( v'(x) = x \implies v(x) = \frac{1}{2}x^2 \)<br><br>
+                        بتطبيق القانون: \( I = \left[ u(x)v(x) \right]_1^e - \int_1^e u'(x)v(x) \, dx \)<br>
+                        \( I = \left[ \frac{1}{2}x^2 \ln(x) \right]_1^e - \int_1^e \left( \frac{1}{x} \cdot \frac{1}{2}x^2 \right) dx \)<br>
+                        \( I = \left( \frac{1}{2}e^2 \ln(e) - 0 \right) - \int_1^e \frac{1}{2}x \, dx \)<br>
+                        \( I = \frac{1}{2}e^2 - \left[ \frac{1}{4}x^2 \right]_1^e \)<br>
+                        \( I = \frac{1}{2}e^2 - \left( \frac{1}{4}e^2 - \frac{1}{4} \right) = \frac{1}{4}e^2 + \frac{1}{4} \).
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            منصة نوفل التعليمية - نحو التميز في شهادة البكالوريا | تم إعداد هذا الدرس لتسهيل الفهم والمراجعة الشاملة
+        </footer>
+
+    </div>
+
+    <script>
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        function toggleAnswer(btnElement) {
+            const answerBox = btnElement.nextElementSibling;
+            if (answerBox.classList.contains('show')) {
+                answerBox.classList.remove('show');
+                btnElement.innerHTML = "عرض طريقة الحل المنهجية 💡";
+            } else {
+                answerBox.classList.add('show');
+                btnElement.innerHTML = "إخفاء الشرح ❌";
+            }
+        }
+    </script>
+</body>
+</html>
